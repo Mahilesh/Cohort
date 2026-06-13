@@ -1,0 +1,17 @@
+.DS_Store
+*.log
+*.env
+.env
+node_modules/
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+dist/
+.build/
+*.egg-info/
+.husky/
+coverage/
+*.swp
+.thumb
+Thumbs.db
