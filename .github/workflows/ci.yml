@@ -1,0 +1,32 @@
+name: Build and Test NGINX App (root)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted, linux, docker]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image (from cicd-project)
+        run: docker build -t cicd-nginx-app cicd-project
+
+      - name: Run nginx container
+        run: |
+          docker run -d --name nginx-test -p 8080:80 cicd-nginx-app
+          sleep 5
+          curl --fail http://localhost:8080
+        shell: bash
+
+      - name: Stop and remove container
+        if: always()
+        run: |
+          docker stop nginx-test || true
+          docker rm nginx-test || true
+        shell: bash
